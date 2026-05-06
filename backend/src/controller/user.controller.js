@@ -1,10 +1,20 @@
-import { createUser } from "../service/user.service.js";
+import { createUser, loginUser } from "../service/user.service.js";
 
 export async function register(req, res){
     try {
         const user = await createUser(req.body);
-        res.status(201).json(user);
+        return res.status(201).json(user);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
+    }
+}
+
+export async function login(req, res){
+    try{
+        const data = await loginUser(req.body);
+
+        return res.json(data)
+    } catch (error) {
+        return res.status(500).json({message: error.message});
     }
 }

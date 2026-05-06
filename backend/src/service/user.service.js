@@ -1,5 +1,6 @@
 import prisma from "../prisma/client.js";
 import bcrypt from "bcrypt";
+import { generateToken } from "../utils/generate-token.js";
 
 export async function createUser({name, email, password}){
     const userExists = await prisma.user.findUnique({
@@ -26,4 +27,34 @@ export async function createUser({name, email, password}){
             password: hashedPassword
         }
     });
+}
+
+export async function loginUser({email, password}) {
+    const user = await prisma.user.findUnique({
+        where: {email}
+    })
+
+    if(!user){
+        throw new Error("ACCOUNT_NOT_FOUND");
+    }
+
+    const passwordMatch = await bcrypt.compare(
+        password, user.password
+    );
+
+    if(!passwordMatch){
+        throw new Error("INCORRECT_PASSWORD")
+    }
+
+    const token = generateToken(user.id);
+
+    return{
+        token,
+        user: {
+            id: user.id,
+            name: user.name,
+            email: user.email
+        }
+    }
+
 }
