@@ -9,6 +9,7 @@ export async function createTransaction({amount, title, type, userId}){
         throw new Error("INVALID_TYPE");
     }
 
+    console.log("Creating transaction with data:", {amount, title, type, userId});
     return prisma.transaction.create({
         data: {
             amount,
@@ -20,12 +21,14 @@ export async function createTransaction({amount, title, type, userId}){
 }
 
 export async function getTransactions(userId){
+    console.log("Fetching transactions for userId:", userId);
     return prisma.transaction.findMany({
         where: {userId}
     });
 }
 
 export async function updateTransaction(id, {amount, title, type}, userId){
+    console.log("Updating transaction with ID:", id);
     const transaction = await prisma.transaction.findFirst({
         where: {
             id,
@@ -48,6 +51,7 @@ export async function updateTransaction(id, {amount, title, type}, userId){
 }
 
 export async function deleteTransaction(id, userId){
+    console.log("Attempting to delete transaction with ID:", id);
     const result = await prisma.transaction.deleteMany({
         where: {
             id,

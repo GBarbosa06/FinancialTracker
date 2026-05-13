@@ -23,11 +23,16 @@ model User {
   transactions Transaction[]
 }
 
+enum TransactionType{
+  income
+  expense
+}
+
 model Transaction {
   id        String   @id @default(uuid())
   title     String
   amount    Float
-  type      String // "income" | "expense"
+  type      TransactionType
   createdAt DateTime @default(now())
 
   userId String

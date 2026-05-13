@@ -20,6 +20,8 @@ export async function createUser({name, email, password}){
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    console.log("Creating ", name,  "user");
+
     return prisma.user.create({
         data: {
             name,
@@ -48,6 +50,7 @@ export async function loginUser({email, password}) {
 
     const token = generateToken(user.id);
 
+    console.log("User logged in: ", user.email);
     return{
         token,
         user: {
