@@ -2,14 +2,8 @@ import { createTransaction, getTransactions, updateTransaction, deleteTransactio
 import {CreateTransactionSchema, UpdateTransactionSchema} from "../schemas/transaction.schema.js";
 
 export async function createTransactionController(req, res){
-    const validatedData = CreateTransactionSchema.safeParse(req.body);
-    if(!validatedData.success){
-        return res.status(400).json({
-            errors: validatedData.error.issues
-        });
-    }
     try{
-        const transaction = await createTransaction({...validatedData.data, userId: req.userId});
+        const transaction = await createTransaction({...req.validatedData, userId: req.userId});
         return res.status(201).json(transaction);
     } catch (error) {
         console.error(error);
@@ -32,14 +26,8 @@ export async function listTransactionsController(req, res){
 }
 
 export async function updateTransactionController(req, res){
-    const validatedData = UpdateTransactionSchema.safeParse(req.body);
-    if(!validatedData.success){
-        return res.status(400).json({
-            errors: validatedData.error.issues
-        });
-    }
     try{
-        const transaction = await updateTransaction(req.params.id, validatedData.data, req.userId);
+        const transaction = await updateTransaction(req.params.id, req.validatedData, req.userId);
         return res.status(200).json(transaction);
     } catch (error) {
         console.error(error);

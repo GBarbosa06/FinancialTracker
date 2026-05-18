@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
+import { validate } from "../middlewares/validation.middleware.js";
+import { CreateTransactionSchema, UpdateTransactionSchema } from "../schemas/transaction.schema.js";
 import { 
     createTransactionController,
     listTransactionsController,
@@ -9,9 +11,9 @@ import {
 
 const router = Router();
 
-router.post("/", authMiddleware, createTransactionController);
+router.post("/", authMiddleware, validate(CreateTransactionSchema), createTransactionController);
 router.get("/", authMiddleware, listTransactionsController);
-router.put("/:id", authMiddleware, updateTransactionController);
+router.put("/:id", authMiddleware, validate(UpdateTransactionSchema), updateTransactionController);
 router.delete("/:id", authMiddleware, removeTransactionController);
 
 export default router;
