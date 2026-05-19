@@ -63,3 +63,28 @@ export async function deleteTransaction(id, userId){
         throw new Error("TRANSACTION_NOT_FOUND");
     }
 }
+
+export async function getTransactionSummary (userId) {
+    const transactions = await prisma.transaction.findMany({
+        where: {userId}
+    });
+    const summary = transactions.reduce((acc, transaction) => {
+        if(transaction.type === "income"){
+            acc.income += transaction.amount;
+        } else{
+            acc.expense += transaction.amount;
+        }
+        acc.balance = acc.income - acc.expense;
+        return acc
+    },
+    {
+    income: 0,
+    expense: 0
+    });
+
+    return {
+        ...summary,
+        balance: summary.income - summary.expense
+    };
+    
+}
