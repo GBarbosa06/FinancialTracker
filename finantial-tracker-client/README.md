@@ -1,73 +1,62 @@
-# React + TypeScript + Vite
+# FinancialTracker — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Cliente React do FinancialTracker com Vite, TypeScript, Tailwind, shadcn/ui, React Query e React Hook Form.
 
-Currently, two official plugins are available:
+## Pré-requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js 20+
+- Backend rodando em `http://localhost:3000`
 
-## React Compiler
+## Configuração
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cp .env.example .env
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Variável principal:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- `VITE_API_URL` — URL da API (padrão: `http://localhost:3000`)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Scripts
+
+| Comando        | Descrição              |
+| -------------- | ---------------------- |
+| `npm run dev`  | Servidor de desenvolvimento |
+| `npm run build`| Build de produção      |
+| `npm run preview` | Preview do build    |
+
+## Rotas
+
+| Rota            | Acesso   |
+| --------------- | -------- |
+| `/login`        | Público  |
+| `/register`     | Público  |
+| `/dashboard`    | Protegido |
+| `/transactions` | Protegido |
+
+## Deploy (Vercel)
+
+1. Importe o repositório na Vercel
+2. Defina o **Root Directory** como `finantial-tracker-client`
+3. Configure `VITE_API_URL` com a URL do backend em produção
+4. O arquivo `vercel.json` já trata o fallback SPA
+
+## Estrutura
+
+```
+src/
+├── components/   # UI, layout, dashboard, transações
+├── pages/
+├── layouts/
+├── routes/
+├── services/
+├── hooks/
+├── contexts/
+├── schemas/
+├── types/
+├── lib/
+├── App.tsx
+└── main.tsx
 ```
